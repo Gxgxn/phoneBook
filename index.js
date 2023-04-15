@@ -7,7 +7,7 @@ app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
 
-const persons = [
+let persons = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -50,4 +50,18 @@ app.get("/api/persons/:id", (req, res) => {
   }
   console.log(person);
   res.status(202).json(person);
+});
+
+app.post("/api/persons", (req, res) => {
+  const { body } = req;
+  if (!body) {
+    return res.status(400).json({ error: "content missing" });
+  }
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: Math.floor(Math.random() * 200),
+  };
+  persons = persons.concat(person);
+  res.json(person);
 });

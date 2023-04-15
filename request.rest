@@ -5,3 +5,13 @@ GET http://localhost:3000/info
 
 GET http://localhost:3000/api/persons/2
 #api/person/:id
+
+###
+
+POST http://localhost:3000/api/persons
+Content-Type: application/json
+
+{
+    "name" : "John Doe",
+    "number":"232-232-4343"
+}
