@@ -7,7 +7,7 @@ app.use(
 );
 
 app.use(express.json());
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
 });
@@ -34,10 +34,10 @@ let persons = [
     number: "39-23-6423122",
   },
 ];
-app.get("/", (req, res) => {
+app.get("/api/persons", (req, res) => {
   res.status(200).json(persons);
 });
-app.get("/info", (req, res) => {
+app.get("/api/persons/info", (req, res) => {
   res.writeHead(200, { "Content-Type": "text/html" });
   const date = new Date();
   res
