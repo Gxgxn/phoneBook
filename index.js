@@ -64,19 +64,18 @@ app.get("/api/persons/:id", (req, res) => {
 
 app.post("/api/persons", (req, res) => {
   const { name, number } = req.body;
-  const isDuplicate = persons.find((person) => person.name === name);
-  if (isDuplicate) {
-    return res.status(400).json({ error: "name must be unique" });
-  }
-  if (!name || !number) {
-    return res.status(400).json({ error: "content missing" });
-  }
+  Person.find({ name: name }).then((response) => {
+    if (response === name) {
+      return res.status(400).json({ error: "name must be unique" });
+    }
+    if (!name || !number) {
+      return res.status(400).json({ error: "content missing" });
+    }
 
-  const person = {
-    name,
-    number,
-    id: Math.floor(Math.random() * 200),
-  };
-  persons = persons.concat(person);
-  res.json(person);
+    const person = new Person({
+      name,
+      number,
+    });
+    person.save().then((savedPerson) => res.status(203).json(savedPerson));
+  });
 });

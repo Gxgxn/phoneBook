@@ -3,15 +3,15 @@ GET http://localhost:3000/info
 
 ###
 
-GET http://localhost:3000/api/persons/2
+GET http://localhost:3002/api/persons/2
 #api/person/:id
 
 ###
 
-POST http://localhost:3000/api/persons
+POST http://localhost:3002/api/persons
 Content-Type: application/json
 
 {
-    "name" : "John Dae",
-    "number":"232-232-4343"
+    "name" : "Luigi Bro",
+    "number":"2332-232-4343"
 }
