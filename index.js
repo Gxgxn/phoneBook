@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
+require("dotenv").config();
 const morgan = require("morgan");
+const Person = require("./models/person");
 morgan.token("data", (req, _) => JSON.stringify(req.body));
 app.use(express.static("dist"));
 app.use(
@@ -36,7 +38,9 @@ let persons = [
   },
 ];
 app.get("/api/persons", (req, res) => {
-  res.status(200).json(persons);
+  Person.find({}).then((persons) => {
+    res.status(200).json(persons);
+  });
 });
 app.get("/api/persons/info", (req, res) => {
   res.writeHead(200, { "Content-Type": "text/html" });
