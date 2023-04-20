@@ -3,7 +3,7 @@ GET http://localhost:3000/info
 
 ###
 
-GET http://localhost:3002/api/persons/2
+GET http://localhost:3002/api/persons/643c7f9e3249de17fc71c7bc
 #api/person/:id
 
 ###
@@ -12,6 +12,6 @@ POST http://localhost:3002/api/persons
 Content-Type: application/json
 
 {
-    "name" : "Luigi Bro",
+    "name" : "Luigi",
     "number":"2332-232-4343"
 }
