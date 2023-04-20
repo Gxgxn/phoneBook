@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const password = process.argv[2];
 const url = `mongodb+srv://gxgxn:${password}@cluster1.baqh6ry.mongodb.net/phoneBook`;
 if (process.argv.length < 3) {

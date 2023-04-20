@@ -8,7 +8,7 @@ console.log("connecting to", url);
 
 mongoose
   .connect(url)
-  .then((result) => {
+  .then(() => {
     console.log("connected to MongoDB");
   })
   .catch((error) => {
@@ -16,8 +16,11 @@ mongoose
   });
 
 const personSchema = new mongoose.Schema({
-  id: Number,
-  name: String,
+  name: {
+    type: String,
+    minLength: [3, "must be 3 Characters minimum"],
+    required: true,
+  },
   number: String,
 });
 personSchema.set("toJSON", {

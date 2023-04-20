@@ -1,8 +1,13 @@
 const express = require("express");
+
 const app = express();
+
 require("dotenv").config();
+
 const morgan = require("morgan");
+
 const Person = require("./models/person");
+
 morgan.token("data", (req, _) => JSON.stringify(req.body));
 app.use(express.static("dist"));
 app.use(
@@ -12,7 +17,7 @@ app.use(
 app.use(express.json());
 const PORT = process.env.PORT || 3002;
 
-let persons = [
+const persons = [
   {
     id: 1,
     name: "Arto Hellas",
@@ -65,7 +70,11 @@ app.put("/api/persons/:id", (req, res, next) => {
     number,
   };
 
-  Person.findByIdAndUpdate(req.params.id, person, { new: true })
+  Person.findByIdAndUpdate(req.params.id, person, {
+    new: true,
+    runValidators: true,
+    context: "query",
+  })
     .then((updatedPerson) => {
       res.json(updatedPerson);
     })
@@ -73,13 +82,13 @@ app.put("/api/persons/:id", (req, res, next) => {
 });
 app.delete("/api/persons/:id", (request, response, next) => {
   Person.findByIdAndRemove(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end();
     })
     .catch((error) => next(error));
 });
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res, next) => {
   const { name, number } = req.body;
   Person.find({ name: name }).then((response) => {
     if (response === name) {
@@ -93,7 +102,10 @@ app.post("/api/persons", (req, res) => {
       name,
       number,
     });
-    person.save().then((savedPerson) => res.status(203).json(savedPerson));
+    person
+      .save()
+      .then((savedPerson) => res.status(203).json(savedPerson))
+      .catch((err) => next(err));
   });
 });
 function unknownRoute(req, res) {
@@ -106,6 +118,8 @@ function errorHandler(err, req, res, next) {
 
   if (err.name === "CastError") {
     return res.status(400).send({ error: "malformatted id" });
+  } else if (err.name === "ValidationError") {
+    return res.status(400).json({ error: err.message });
   }
 
   next(err);
